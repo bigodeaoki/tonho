@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useNow } from '../hooks/useNow';
 import { countdown, formatCountdown, nextDrop } from '../lib/calendar';
+import { TagMark, Wordmark } from './Logo';
 
 export default function Header() {
   const { count, setOpen, bump } = useCart();
@@ -34,7 +35,9 @@ export default function Header() {
   return (
     <header className={`hd${hidden ? ' is-hidden' : ''}`}>
       <Link to="/" className="hd-logo" aria-label="Tonho e Gabi, página inicial">
-        Tonho e Gabi<sup>®</sup>
+        <TagMark className="hd-tag" />
+        <Wordmark className="hd-word" />
+        <Wordmark className="hd-word-sm" solid />
       </Link>
       <nav className="hd-nav" aria-label="Principal">
         <NavLink to="/loja" className="link-line">

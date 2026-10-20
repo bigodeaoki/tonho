@@ -342,18 +342,27 @@ button {
 
 .hd-logo {
   justify-self: start;
-  font-family: var(--f-display);
-  font-stretch: 125%;
-  font-weight: 900;
-  font-size: 1.05rem;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ink);
 }
 
-.hd-logo sup {
-  font-size: 0.55em;
-  margin-left: 2px;
+.hd-tag {
+  width: 15px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.hd-word {
+  width: 158px;
+  height: auto;
+}
+
+.hd-word-sm {
+  display: none;
+  width: 108px;
+  height: auto;
 }
 
 .hd-nav {
@@ -429,8 +438,11 @@ button {
 }
 
 @media (max-width: 420px) {
-  .hd-logo {
-    font-size: 0.9rem;
+  .hd-word {
+    display: none;
+  }
+  .hd-word-sm {
+    display: block;
   }
   .hd-nav {
     gap: 10px;
@@ -549,13 +561,14 @@ button {
 }
 
 .ft-word {
-  padding: 0 var(--pad);
-  font-size: 10.3vw;
-  line-height: 0.8;
-  letter-spacing: -0.055em;
-  white-space: nowrap;
-  margin-bottom: -0.08em;
+  padding: 8px var(--pad) clamp(20px, 2.4vw, 36px);
   color: var(--white);
+}
+
+.ft-word svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .ft-legal {

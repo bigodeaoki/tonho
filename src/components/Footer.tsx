@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { COLLECTIONS } from '../data/collections';
+import { Wordmark } from './Logo';
 
 const AVISO = 'oi@tonhoegabi.com.br';
 
@@ -62,9 +63,9 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <p className="ft-word display" aria-hidden="true">
-        Tonho e Gabi
-      </p>
+      <div className="ft-word">
+        <Wordmark />
+      </div>
       <div className="ft-legal mono">
         <span>© 2026 Tonho e Gabi. Feito no Brasil.</span>
         <Link className="link-line" to="/creditos">
