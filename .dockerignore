@@ -1,0 +1,10 @@
+node_modules
+dist
+.staging
+.taste-skill
+.claude
+.git
+*.log
+Dockerfile
+docker-compose.yml
+.dockerignore
