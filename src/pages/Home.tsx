@@ -6,6 +6,7 @@ import NewIn from '../components/home/NewIn';
 import ZoomStory from '../components/home/ZoomStory';
 import CalendarIndex from '../components/home/CalendarIndex';
 import DropAlert from '../components/home/DropAlert';
+import CollectionViewer from '../components/CollectionViewer';
 import Marquee from '../components/Marquee';
 import { useTheme } from '../context/ThemeContext';
 import { useNow } from '../hooks/useNow';
@@ -35,6 +36,7 @@ export default function Home() {
       <Lineup />
       <CollectionsScroll />
       <Marquee reverse items={['Quando acaba, não volta', 'Feito no Brasil', 'Troca em 30 dias', 'Drop toda estação']} />
+      <CollectionViewer key={worn.id} collection={worn} />
       <NewIn />
       <ZoomStory />
       <CalendarIndex />

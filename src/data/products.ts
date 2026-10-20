@@ -22,6 +22,8 @@ export interface Product {
   sizes: string[];
   main: Shot;
   alt?: Shot;
+  /** recorte usado na vitrine (public/img/cut/<id>.webp); se faltar, usa o da foto principal */
+  cut?: string;
   description: string;
   fabric: string;
   soldOut?: boolean;
@@ -143,6 +145,7 @@ export const PRODUCTS: Product[] = [
     sizes: UNICO,
     main: { id: '073', focus: '50% 20%', zoom: 1.3 },
     alt: { id: '071' },
+    cut: '071',
     description: 'Bucket de jeans lavado, aba média.',
     fabric: 'Jeans 100% algodão',
   },

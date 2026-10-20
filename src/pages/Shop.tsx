@@ -2,12 +2,12 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import ProductCard from '../components/ProductCard';
+import CollectionViewer from '../components/CollectionViewer';
 import Chars from '../components/Chars';
-import { useTheme } from '../context/ThemeContext';
 import { COLLECTIONS, byId } from '../data/collections';
-import { CATEGORY_LABEL, PRODUCTS, cutSrc, type Category, type Product } from '../data/products';
+import { CATEGORY_LABEL, PRODUCTS, type Category, type Product } from '../data/products';
 import { useNow } from '../hooks/useNow';
-import { countdown, nextDrop, statusLabel, statusOf } from '../lib/calendar';
+import { countdown, nextDrop, statusOf } from '../lib/calendar';
 import { gsap, reduced } from '../lib/motion';
 
 type Sort = 'novidades' | 'menor' | 'maior';
@@ -16,7 +16,6 @@ const NEWEST = [...COLLECTIONS].sort((a, b) => Date.parse(b.launch) - Date.parse
 export default function Shop() {
   const [params, setParams] = useSearchParams();
   const now = useNow(1000);
-  const { wear, worn, current } = useTheme();
   const root = useRef<HTMLDivElement>(null);
   const colecao = params.get('colecao') ?? 'tudo';
   const tipo = (params.get('tipo') ?? 'tudo') as Category | 'tudo';
@@ -51,8 +50,8 @@ export default function Shop() {
   useGSAP(
     () => {
       if (reduced()) return;
+      if (!document.querySelector('.sh-title')) return;
       gsap.fromTo('.sh-title .char', { yPercent: 115 }, { yPercent: 0, duration: 1, ease: 'expo.out', stagger: 0.03 });
-      gsap.fromTo('.sh-banner-model', { yPercent: 25, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.2, ease: 'expo.out', delay: 0.2 });
     },
     { scope: root, dependencies: [colecao], revertOnUpdate: true },
   );
@@ -66,40 +65,29 @@ export default function Shop() {
   );
 
   const count = (id: string) => PRODUCTS.filter((p) => p.collectionId === id).length;
-  const title = chosen ? chosen.name : 'Loja';
 
   return (
     <div className="sh" ref={root} style={chosen ? { ['--c' as string]: chosen.accent } : undefined}>
-      <section className={`sh-head${chosen ? ' has-banner' : ''}`} aria-labelledby="sh-title">
-        <div className="sh-head-copy">
-          <p className="mono">
-            {chosen ? `[ ${chosen.drop} ] ${chosen.when} — ${statusLabel(chosen, now)}` : `[ ${PRODUCTS.length} peças ] Todas as coleções`}
-          </p>
-          <h1 id="sh-title" className="sh-title display" aria-label={title}>
-            <span className="split-line">
-              <Chars text={title} />
-            </span>
-          </h1>
-          <p className="sh-lede">{chosen ? chosen.blurb : 'Camisetas, moletons, calças e acessórios dos drops do ano. Entrega pra todo o Brasil, troca em 30 dias.'}</p>
-          {chosen ? (
-            <button type="button" className="btn btn-light" onClick={() => wear(chosen.id === worn.id && chosen.id !== current.id ? null : chosen.id)}>
-              {chosen.id === worn.id ? 'Site vestindo essa cor' : 'Vestir o site com essa cor'}
-            </button>
-          ) : (
-            next && (
+      {chosen ? (
+        <CollectionViewer key={chosen.id} collection={chosen} titleTag="h1" />
+      ) : (
+        <section className="sh-head" aria-labelledby="sh-title">
+          <div className="sh-head-copy">
+            <p className="mono">[ {PRODUCTS.length} peças ] Todas as coleções</p>
+            <h1 id="sh-title" className="sh-title display" aria-label="Loja">
+              <span className="split-line">
+                <Chars text="Loja" />
+              </span>
+            </h1>
+            <p className="sh-lede">Camisetas, moletons, calças e acessórios dos drops do ano. Entrega pra todo o Brasil, troca em 30 dias.</p>
+            {next && (
               <p className="mono sh-next">
                 <span className="blink">●</span> Pré-venda do {next.name} aberta. Drop em {countdown(next.launch, now).days} dias.
               </p>
-            )
-          )}
-        </div>
-        {chosen && (
-          <div className="sh-banner" aria-hidden="true">
-            <span className="sh-banner-disc" />
-            <img className="sh-banner-model" src={cutSrc(chosen.cut)} alt="" />
+            )}
           </div>
-        )}
-      </section>
+        </section>
+      )}
 
       <div className="sh-filters" role="group" aria-label="Filtrar produtos">
         <div className="sh-chips">
